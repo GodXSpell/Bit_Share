@@ -1,0 +1,12 @@
+Hello, this is a test file for the file-sharing system!
+
+This file contains some sample text that will be transferred from one device to another.
+
+Features of this file-sharing system:
+- Send files over local network
+- Works over LAN or same Wi-Fi
+- No internet connection needed
+- Simple CLI interface
+- Supports any file type
+
+Test completed successfully!
