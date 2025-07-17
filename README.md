@@ -2,6 +2,10 @@
 
 A simple peer-to-peer file sharing system built in Go that allows you to send files between devices over a local network.
 
+## License
+
+This project is open source and available under the MIT License.
+
 ## Features
 
 - ✅ Send files over LAN or same Wi-Fi network
@@ -159,6 +163,3 @@ The system handles common errors:
 telnet <receiver_ip> <port>
 ```
 
-## License
-
-This project is open source and available under the MIT License.
