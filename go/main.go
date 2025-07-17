@@ -82,23 +82,21 @@ func startReceiver(port int, destDir string) {
 	sigChan := make(chan os.Signal, 1)
 	signal.Notify(sigChan, syscall.SIGINT, syscall.SIGTERM)
 
-	// Only try firewall management if we detect we're on a restrictive network
-	if needsFirewallRule(port) {
-		rule, err := firewall.AddTempRule(port)
-		if err != nil {
-			fmt.Printf("⚠️  Firewall rule not added: %v\n", err)
-			fmt.Printf("💡 If connection fails, manually allow port %d or run as administrator\n", port)
-		} else {
-			fmt.Printf("✓ Temporary firewall rule added for port %d\n", port)
-			// Ensure rule is removed on exit
-			defer func() {
-				if err := rule.RemoveRule(); err != nil {
-					fmt.Printf("⚠️  Could not remove firewall rule: %v\n", err)
-				} else {
-					fmt.Printf("✓ Firewall rule removed\n")
-				}
-			}()
-		}
+	// On Windows, firewall rules are often necessary. We will always try to add one.
+	rule, err := firewall.AddTempRule(port)
+	if err != nil {
+		fmt.Printf("⚠️  Firewall rule not added: %v\n", err)
+		fmt.Printf("💡 If connection fails, manually allow port %d or run as administrator\n", port)
+	} else {
+		fmt.Printf("✓ Temporary firewall rule added for port %d\n", port)
+		// Ensure rule is removed on exit
+		defer func() {
+			if err := rule.RemoveRule(); err != nil {
+				fmt.Printf("⚠️  Could not remove firewall rule: %v\n", err)
+			} else {
+				fmt.Printf("✓ Firewall rule removed\n")
+			}
+		}()
 	}
 
 	// Handle graceful shutdown
@@ -120,6 +118,9 @@ func startReceiver(port int, destDir string) {
 		fmt.Println("🌐 Your IP addresses are:")
 		for _, ip := range localIPs {
 			fmt.Printf("  - %s\n", ip)
+			if strings.HasPrefix(ip, "169.254.") {
+				fmt.Println("  ⚠️  Warning: This IP looks like an APIPA address. Your computer may not be connected to the network correctly. Please check your network connection.")
+			}
 		}
 		fmt.Printf("🔗 Others can connect to: %s:%d\n", localIPs[0], port)
 	}
@@ -135,8 +136,6 @@ func startReceiver(port int, destDir string) {
 }
 
 func startSender(ip string, port int, filePath string) {
-	fmt.Printf("Sender: Connecting to %s:%d...\n", ip, port)
-
 	// Remove quotes if present (useful for drag-and-drop)
 	if strings.HasPrefix(filePath, "\"") && strings.HasSuffix(filePath, "\"") {
 		filePath = filePath[1 : len(filePath)-1]
@@ -174,36 +173,38 @@ func startSender(ip string, port int, filePath string) {
 }
 
 func printUsage() {
-	fmt.Println("File Share Tool")
+	fmt.Println("Welcome to BitShare")
+	fmt.Println("Hope you find it useful!")
 	fmt.Println("-----------------")
 	fmt.Println("Usage:")
 	fmt.Println("  Send a file:")
-	fmt.Println("    go run main.go send <ip> <port_no> \"<file_path_or_name>\"")
+	fmt.Println("    gomain send <ip> <port_no> \"<file_path_or_name>\"")
 	fmt.Println("\n  Receive a file:")
-	fmt.Println("    go run main.go receive <port_no> [destination_directory]")
+	fmt.Println("    gomain receive <port_no> [destination_directory]")
 	fmt.Println("\nExamples:")
 	fmt.Println("  - Send a file using its full path (use quotes if the path has spaces):")
-	fmt.Println("    go run main.go send 192.168.1.5 9000 \"C:\\Users\\YourUser\\My Documents\\report.docx\"")
+	fmt.Println("    gomain send 192.168.1.5 9000 \"C:\\Users\\YourUser\\My Documents\\report.docx\"")
 	fmt.Println("\n  - Send a file by name (searches Downloads, Documents, Desktop):")
-	fmt.Println("    go run main.go send 192.168.1.5 9000 \"MyPicture.jpg\"")
+	fmt.Println("    gomain send 192.168.1.5 9000 \"MyPicture.jpg\"")
 	fmt.Println("\n  - Receive a file into the current folder:")
-	fmt.Println("    go run main.go receive 9000")
+	fmt.Println("    gomain receive 9000")
 	fmt.Println("\n  - Receive a file into a specific folder:")
-	fmt.Println("    go run main.go receive 9000 C:\\Users\\YourUser\\Downloads")
+	fmt.Println("    gomain receive 9000 C:\\Users\\YourUser\\Downloads")
 	fmt.Println("\n--- How It Works: A Scenario ---")
 	fmt.Println("1. On the RECEIVING computer (let's say its IP is 192.168.1.10):")
 	fmt.Println("   - The user runs this to listen on port 9000 and save files to their Downloads folder:")
-	fmt.Println("     go run main.go receive 9000 \"C:\\Users\\ReceiverUser\\Downloads\"")
+	fmt.Println("     gomain receive 9000 \"C:\\Users\\ReceiverUser\\Downloads\"")
 	fmt.Println("\n2. On the SENDING computer:")
 	fmt.Println("   - You want to send 'MyReport.pdf' which is on your Desktop.")
 	fmt.Println("   - You run this command, pointing to the receiver's IP and port:")
-	fmt.Println("     go run main.go send 192.168.1.10 9000 \"MyReport.pdf\"")
+	fmt.Println("     gomain send 192.168.1.10 9000 \"MyReport.pdf\"")
 	fmt.Println("\n3. Result:")
 	fmt.Println("   - The tool finds 'MyReport.pdf' on your Desktop and sends it.")
 	fmt.Println("   - The receiving computer saves it to 'C:\\Users\\ReceiverUser\\Downloads\\MyReport.pdf'.")
 }
 
-// needsFirewallRule checks if we likely need a firewall rule
+// needsFirewallRule is no longer needed as we always attempt to add a rule
+/*
 func needsFirewallRule(port int) bool {
 	// Simple port availability check
 	listener, err := net.Listen("tcp", fmt.Sprintf(":%d", port))
@@ -213,3 +214,4 @@ func needsFirewallRule(port int) bool {
 	listener.Close()
 	return false
 }
+*/
