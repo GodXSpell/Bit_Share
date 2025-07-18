@@ -5,6 +5,7 @@ import (
 	"net"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
 // GetAllLocalIPs returns a slice of all non-loopback local IP addresses.
@@ -90,4 +91,18 @@ func FindFileInCommonDirs(filename string) (string, error) {
 	}
 
 	return "", fmt.Errorf("file not found in Desktop, Documents, or Downloads")
+}
+
+// GenerateNodeName creates a friendly name for this node
+func GenerateNodeName() string {
+	hostname, err := os.Hostname()
+	if err != nil {
+		hostname = "unknown-device"
+	}
+
+	// Clean up hostname and add a suffix for uniqueness
+	cleanName := strings.Replace(hostname, ".", "-", -1)
+	cleanName = strings.Replace(cleanName, " ", "-", -1)
+
+	return cleanName
 }

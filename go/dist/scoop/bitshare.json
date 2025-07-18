@@ -1,0 +1,23 @@
+{
+    "version": "1.0.0",
+    "description": "High-speed P2P mesh network file sharing system",
+    "homepage": "https://github.com/yourusername/bitshare",
+    "license": "MIT",
+    "architecture": {
+        "64bit": {
+            "url": "https://github.com/yourusername/bitshare/releases/download/v1.0.0/bitshare-windows-amd64.zip",
+            "hash": "REPLACE_WITH_ACTUAL_SHA256",
+            "extract_dir": "bitshare-1.0.0"
+        }
+    },
+    "bin": "bitshare.exe",
+    "checkver": "github",
+    "autoupdate": {
+        "architecture": {
+            "64bit": {
+                "url": "https://github.com/yourusername/bitshare/releases/download/v$version/bitshare-windows-amd64.zip",
+                "extract_dir": "bitshare-$version"
+            }
+        }
+    }
+}

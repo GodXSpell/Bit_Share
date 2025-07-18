@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BitShare - P2P Mesh Network File Sharing</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .download-section {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        .download-button {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .download-button:hover {
+            background-color: #2980b9;
+        }
+        code {
+            background-color: #f0f0f0;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+        .instructions {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>BitShare P2P Mesh Network</h1>
+    <p>A high-speed peer-to-peer file sharing system with mesh network capabilities that works without servers.</p>
+    
+    <div class="download-section">
+        <h2>Download BitShare</h2>
+        <h3>Latest Version: 1.0.0</h3>
+        
+        <h3>Windows</h3>
+        <a href="https://github.com/yourusername/bitshare/releases/latest/download/bitshare-windows-amd64.zip" class="download-button">Download for Windows (64-bit)</a>
+        
+        <h3>macOS</h3>
+        <a href="https://github.com/yourusername/bitshare/releases/latest/download/bitshare-macos-amd64.zip" class="download-button">Download for macOS (Intel)</a>
+        <a href="https://github.com/yourusername/bitshare/releases/latest/download/bitshare-macos-arm64.zip" class="download-button">Download for macOS (Apple Silicon)</a>
+        
+        <h3>Linux</h3>
+        <a href="https://github.com/yourusername/bitshare/releases/latest/download/bitshare-linux-amd64.tar.gz" class="download-button">Download for Linux (64-bit)</a>
+    </div>
+    
+    <div class="instructions">
+        <h2>Installation Instructions</h2>
+        
+        <h3>Windows</h3>
+        <ol>
+            <li>Download the ZIP file above</li>
+            <li>Extract the contents to a folder</li>
+            <li>Open PowerShell as Administrator</li>
+            <li>Navigate to the extracted folder</li>
+            <li>Run <code>.\install.ps1</code></li>
+        </ol>
+        
+        <h3>macOS</h3>
+        <ol>
+            <li>Download the appropriate ZIP file for your Mac</li>
+            <li>Extract the contents to a folder</li>
+            <li>Open Terminal</li>
+            <li>Navigate to the extracted folder</li>
+            <li>Run <code>chmod +x install.sh</code></li>
+            <li>Run <code>./install.sh</code></li>
+        </ol>
+        
+        <h3>Linux</h3>
+        <ol>
+            <li>Download the TAR.GZ file above</li>
+            <li>Extract it with <code>tar -xzvf bitshare-linux-amd64.tar.gz</code></li>
+            <li>Navigate to the extracted folder</li>
+            <li>Run <code>chmod +x install.sh</code></li>
+            <li>Run <code>./install.sh</code></li>
+        </ol>
+    </div>
+
+    <div class="instructions">
+        <h2>Running BitShare</h2>
+        <p>After installation, you can run BitShare from any terminal:</p>
+        <pre><code>bitshare</code></pre>
+        <p>This will start BitShare in interactive mode.</p>
+    </div>
+    
+    <div class="download-section">
+        <h2>Alternative Installation Methods</h2>
+        
+        <h3>Package Managers</h3>
+        <p>For macOS users with Homebrew:</p>
+        <pre><code>brew tap yourusername/bitshare
+brew install bitshare</code></pre>
+
+        <p>For Windows users with Scoop:</p>
+        <pre><code>scoop bucket add bitshare https://github.com/yourusername/scoop-bitshare
+scoop install bitshare</code></pre>
+        
+        <h3>For Developers</h3>
+        <p>Clone the repository:</p>
+        <pre><code>git clone https://github.com/yourusername/bitshare.git
+cd bitshare
+go build -o bitshare</code></pre>
+    </div>
+</body>
+</html>
